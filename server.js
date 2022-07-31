@@ -3,12 +3,14 @@ const express = require('express')
 const mongoose = require('mongoose')
 
 const workoutRoutes = require('./routes/workouts')
+const userRouter = require('./routes/user')
 
 const app = express()
 
 app.use(express.json());
 
 app.use('/api/workouts', workoutRoutes);
+app.use('/api/user', userRouter);
 
 app.use((req, res, next) => {
     console.log(req.path, req.method);
