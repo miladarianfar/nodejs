@@ -64,5 +64,7 @@ const updateWorkout = async (req, res) => {
 module.exports = {
     getWorkouts,
     getWorkout,
-    createWorkout
+    createWorkout,
+    deleteWorkout,
+    updateWorkout
 }
