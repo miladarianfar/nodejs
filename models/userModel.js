@@ -19,13 +19,13 @@ const userSchema = new Schema({
 userSchema.statics.signup = async function(email, password) {
     if (!email || !password) {
         throw Error('All fields must be filled')
-      }
-      if (!validator.isEmail(email)) {
+    }
+    if (!validator.isEmail(email)) {
         throw Error('Email not valid')
-      }
-      if (!validator.isStrongPassword(password)) {
+    }
+    if (!validator.isStrongPassword(password)) {
         throw Error('Password not strong enough')
-      }
+    }
     
       const exists = await this.findOne({ email })
     
@@ -38,6 +38,21 @@ userSchema.statics.signup = async function(email, password) {
     const user = await this.create({ email, password: hash });
 
     return user;
+}
+
+userSchema.statics.login = async function(email, password) {
+    if (!email || !password) {
+        throw Error('All fields must be filled')
+    }
+    const user = await this.findOne({ email })
+    if(!user) {
+        throw Error('Inccorect Email')
+    }
+    const match = bcrypt.compare(password, user.password);
+    if(!match) {
+        throw Error('Inccorect Password')
+    }
+    return user
 }
 
 module.exports = mongoose.model('User', userSchema);
