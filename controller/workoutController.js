@@ -9,14 +9,19 @@ const getWorkouts = async (req, res) => {
 
 const getWorkout = async (req, res) => {
     const { id } = req.params
-    const workout = await Workout.findById(id)
-    if(!mongoose.Types.ObjectId.isValid(id)) {
+    
+    try {
+        const workout = await Workout.findById(id)
+        if(!mongoose.Types.ObjectId.isValid(id)) {
+            res.status(404).json({error: 'No such workout'})
+        }
+        if(!workout) {
+            res.status(404).json({error: 'No such workout'})
+        }
+        res.status(200).json(workout);
+    } catch(error) {
         res.status(404).json({error: 'No such workout'})
     }
-    if(!workout) {
-        res.status(404).json({error: 'No such workout'})
-    }
-    res.status(200).json(workout);
 }
 
 const createWorkout = async (req, res) => {

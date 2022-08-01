@@ -27,11 +27,11 @@ userSchema.statics.signup = async function(email, password) {
         throw Error('Password not strong enough')
     }
     
-      const exists = await this.findOne({ email })
-    
-      if (exists) {
+    const exists = await this.findOne({ email })
+
+    if (exists) {
         throw Error('Email already in use')
-      }
+    }
     const salt = await bcrypt.genSalt(10)
     const hash = await bcrypt.hash(password, salt)
 
@@ -48,7 +48,7 @@ userSchema.statics.login = async function(email, password) {
     if(!user) {
         throw Error('Inccorect Email')
     }
-    const match = bcrypt.compare(password, user.password);
+    const match = await bcrypt.compare(password, user.password);
     if(!match) {
         throw Error('Inccorect Password')
     }
